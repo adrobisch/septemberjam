@@ -1,6 +1,9 @@
 package septemberjam;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -12,21 +15,37 @@ import septemberjam.input.LeapMotionListener;
 public class GameApplication extends SimpleApplication {
     LeapMotionInput leapMotionInput;
     private Spatial fighter;
+    private BulletAppState bulletAppState;
 
     @Override
     public void simpleInitApp() {
+        setupPhysics();
         addFighterModel();
 		addRocks();
         setupInput();
         disableMovableCamera();
     }
 
+    private void setupPhysics() {
+        bulletAppState = new BulletAppState();
+        stateManager.attach(bulletAppState);
+        getPhysicsSpace().enableDebug(assetManager);
+        getPhysicsSpace().setGravity(Vector3f.ZERO);
+    }
+
+    public PhysicsSpace getPhysicsSpace() {
+        return bulletAppState.getPhysicsSpace();
+    }
+
     private void addFighterModel() {
         fighter = assetManager.loadModel("Models/fighter.j3o");
         fighter.scale(0.7f);
         fighter.rotate(0, degreeAsRadian(180), 0);
-        fighter.setLocalTranslation(0, -2.5f, 0);
         rootNode.attachChild(fighter);
+
+        fighter.addControl(new RigidBodyControl(2));
+        fighter.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(0, -2.5f, 0));
+        getPhysicsSpace().add(fighter);
     }
 
     public float degreeAsRadian(float degree) {
