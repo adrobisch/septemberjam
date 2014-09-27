@@ -60,13 +60,13 @@ public class GameApplication extends SimpleApplication {
 
 	public void addRocks() {
 
-        Spatial rock1 = createRock(new Vector3f(-3, 0, -10), 0.1f, "rock_01");
-        Spatial rock2 = createRock(new Vector3f(-2, 0, -10), 0.1f, "rock_02");
-        Spatial rock3 = createRock(new Vector3f(-1, 0, -10), 0.1f, "rock_03");
-        Spatial rock4 = createRock(new Vector3f(0, 0, -10), 0.1f, "rock_04");
-        Spatial rock5 = createRock(new Vector3f(1, 0, -10), 0.1f, "rock_05");
-        Spatial rock6= createRock(new Vector3f(2, 0, -10), 0.1f, "rock_06");
-        Spatial rockFit = createRock(new Vector3f(3, 0, -10), 0.005f, "rock_fit");
+        Spatial rock1 = createRock(new Vector3f(-3, 0, -10), 0.1f, "rock_01", 60f);
+        Spatial rock2 = createRock(new Vector3f(-2, 0, -10), 0.1f, "rock_02", 60f);
+        Spatial rock3 = createRock(new Vector3f(-1, 0, -10), 0.1f, "rock_03", 60f);
+        Spatial rock4 = createRock(new Vector3f(0, 0, -10), 0.1f, "rock_04", 60f);
+        Spatial rock5 = createRock(new Vector3f(1, 0, -10), 0.1f, "rock_05", 60f);
+        Spatial rock6= createRock(new Vector3f(2, 0, -10), 0.1f, "rock_06", 60f);
+        Spatial rockFit = createRock(new Vector3f(3, 0, -10), 0.005f, "rock_fit", 60f);
 
         rootNode.attachChild(rock1);
         rootNode.attachChild(rock2);
@@ -77,7 +77,7 @@ public class GameApplication extends SimpleApplication {
         rootNode.attachChild(rockFit);
 	}
 
-    private Spatial createRock(Vector3f position, float scale, String model) {
+    private Spatial createRock(Vector3f position, float scale, String model, Float speed) {
 
         Spatial spatial = assetManager.loadModel("Models/" + model + ".j3o");
         Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -90,6 +90,7 @@ public class GameApplication extends SimpleApplication {
 
         spatial.addControl(new RigidBodyControl(0.5f));
         spatial.getControl(RigidBodyControl.class).setPhysicsLocation(position);
+        spatial.getControl(RigidBodyControl.class).applyCentralForce(new Vector3f(0, 0, speed));
         getPhysicsSpace().add(spatial);
 
         return spatial;
