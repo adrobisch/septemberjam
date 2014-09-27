@@ -14,20 +14,31 @@ import septemberjam.input.KeyboardInput;
 import septemberjam.input.LeapMotionInput;
 import septemberjam.input.LeapMotionListener;
 import septemberjam.input.SpaceShipCollistionListener;
+import septemberjam.input.LocationUpdate;
+
 
 public class GameApplication extends SimpleApplication {
+    
     LeapMotionInput leapMotionInput;
+    
     private Spatial fighter;
+    
+    private SpaceShipActions actions;
+    
     private BulletAppState bulletAppState;
 
     @Override
     public void simpleInitApp() {
         setupPhysics();
         setupGui();
+        
         addFighterModel();
-		addRocks();
+        
+        setupActions();
         setupInput();
         disableMovableCamera();
+
+        addRocks();
     }
 
     private void setupGui() {
@@ -110,7 +121,11 @@ public class GameApplication extends SimpleApplication {
         }
      
         KeyboardInput keyboardInput = new KeyboardInput();
-        keyboardInput.setupKeyMapping(inputManager, new SpaceshipLocationUpdate(0f, 0f, fighter, cam));
+        keyboardInput.setupKeyMapping(inputManager, actions);
+    }
+
+    private void setupActions() {
+        actions = new SpaceShipActions(cam, fighter);
     }
 
     private void setupLeapMotion() {
@@ -132,7 +147,7 @@ public class GameApplication extends SimpleApplication {
     }
 
     public void updateSpaceShipLocation(float x, float y) {
-        enqueue(new SpaceshipLocationUpdate(x, y, fighter, cam));
+        enqueue(new LocationUpdate(x, y, actions));
     }
 
     public void handleShipCollision() {
