@@ -1,6 +1,7 @@
 package septemberjam;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
@@ -33,6 +34,8 @@ public class GameApplication extends SimpleApplication {
 
     private ParticleEmitter flame;
 
+    private AudioNode collisionSound;
+
     @Override
     public void simpleInitApp() {
         setupPhysics();
@@ -43,6 +46,7 @@ public class GameApplication extends SimpleApplication {
         setupActions();
 		addRocks();
         createFlame();
+        createCollisionSound();
         setupInput();
         disableMovableCamera();
     }
@@ -68,6 +72,14 @@ public class GameApplication extends SimpleApplication {
         flame.setMaterial(mat);
         renderManager.preloadScene(flame);
         rootNode.attachChild(flame);
+    }
+
+    private void createCollisionSound() {
+        collisionSound = new AudioNode(assetManager, "Audio/Gun.wav", true);
+        collisionSound.setLooping(false);
+        collisionSound.setPositional(true);
+        collisionSound.setVolume(3);
+        rootNode.attachChild(collisionSound);
     }
 
     private void setupRootControls() {
@@ -133,16 +145,6 @@ public class GameApplication extends SimpleApplication {
 
     public void addRocks() {
         rootNode.addControl(new CreateRockControl(this, 0.7f));
-
-        float startZ = -30f;
-        float rockSpeed = 60f;
-	    Spatial rock1 = createRock(new Vector3f(-3, 1, startZ), 0.1f, "rock_01", rockSpeed);
-        Spatial rock2 = createRock(new Vector3f(-2, 2, startZ), 0.1f, "rock_02", rockSpeed);
-        Spatial rock3 = createRock(new Vector3f(-1, -2, startZ), 0.1f, "rock_03", rockSpeed);
-        Spatial rock4 = createRock(new Vector3f(0, -6, startZ), 0.1f, "rock_04", rockSpeed);
-        Spatial rock5 = createRock(new Vector3f(1, -2, startZ), 0.1f, "rock_05", rockSpeed);
-        Spatial rock6= createRock(new Vector3f(2, -6, startZ), 0.1f, "rock_06", rockSpeed);
-        Spatial rockFit = createRock(new Vector3f(3, -2, startZ), 0.005f, "rock_fit", rockSpeed);
     }
 
     private void setupInput() {
@@ -184,6 +186,7 @@ public class GameApplication extends SimpleApplication {
     public void handleShipCollision() {
         System.out.println("ship happens!");
         flame.emitAllParticles();
+        collisionSound.play();
     }
 
     public static void main(String[] args) {
