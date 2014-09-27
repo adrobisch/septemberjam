@@ -1,4 +1,5 @@
 /liblwjgl64.so
+libbulletjme64.so
 /libopenal64.so
 target
 .idea
