@@ -14,10 +14,17 @@ import septemberjam.input.KeyboardInput;
 import septemberjam.input.LeapMotionInput;
 import septemberjam.input.LeapMotionListener;
 import septemberjam.input.SpaceShipCollistionListener;
+import septemberjam.input.LocationUpdate;
+
 
 public class GameApplication extends SimpleApplication {
+    
     LeapMotionInput leapMotionInput;
+    
     private Spatial fighter;
+    
+    private SpaceShipActions actions;
+    
     private BulletAppState bulletAppState;
 
     @Override
@@ -26,6 +33,8 @@ public class GameApplication extends SimpleApplication {
         setupGui();
         setupRootControls();
         addFighterModel();
+        
+        setupActions();
 		addRocks();
         setupInput();
         disableMovableCamera();
@@ -91,6 +100,8 @@ public class GameApplication extends SimpleApplication {
     }
 
     public void addRocks() {
+        rootNode.addControl(new CreateRockControl());
+
         float startZ = -30f;
         float rockSpeed = 60f;
 	    Spatial rock1 = createRock(new Vector3f(-3, 1, startZ), 0.1f, "rock_01", rockSpeed);
@@ -116,7 +127,11 @@ public class GameApplication extends SimpleApplication {
         }
      
         KeyboardInput keyboardInput = new KeyboardInput();
-        keyboardInput.setupKeyMapping(inputManager, new SpaceshipLocationUpdate(0f, 0f, fighter, cam));
+        keyboardInput.setupKeyMapping(inputManager, actions);
+    }
+
+    private void setupActions() {
+        actions = new SpaceShipActions(cam, fighter);
     }
 
     private void setupLeapMotion() {
