@@ -87,7 +87,9 @@ public class GameApplication extends SimpleApplication {
 
 
     private void setupInput() {
-        setupLeapMotion();
+        if (Boolean.parseBoolean(System.getProperty("leap.motion.enabled"))) {
+            setupLeapMotion();
+        }
         KeyboardInput keyboardInput = new KeyboardInput();
         keyboardInput.setupKeyMapping(inputManager, new SpaceshipLocationUpdate(0f, 0f, fighter));
     }
