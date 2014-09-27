@@ -69,7 +69,7 @@ public class SpaceshipLocationUpdate implements Callable<Void> {
         
         Vector3f cameraLocation = location.mult(CAMERA_MOVE_FACTOR).add(cameraOrigin);
         
-        camera.setLocation(cameraLocation);
+        //camera.setLocation(cameraLocation);
     }
 
 }
