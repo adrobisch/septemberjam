@@ -5,7 +5,11 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.effect.ParticleEmitter;
+import com.jme3.effect.ParticleMesh;
+import com.jme3.effect.shapes.EmitterSphereShape;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
@@ -27,6 +31,8 @@ public class GameApplication extends SimpleApplication {
     
     private BulletAppState bulletAppState;
 
+    private ParticleEmitter flame;
+
     @Override
     public void simpleInitApp() {
         setupPhysics();
@@ -36,8 +42,32 @@ public class GameApplication extends SimpleApplication {
         
         setupActions();
 		addRocks();
+        createFlame();
         setupInput();
         disableMovableCamera();
+    }
+
+    private void createFlame(){
+        flame = new ParticleEmitter("Flame", ParticleMesh.Type.Point, 32);
+        flame.setSelectRandomImage(true);
+        flame.setStartColor(new ColorRGBA(1f, 0.4f, 0.05f, 1));
+        flame.setEndColor(new ColorRGBA(.4f, .22f, .12f, 0f));
+        flame.setStartSize(1.3f);
+        flame.setEndSize(2f);
+        flame.setShape(new EmitterSphereShape(Vector3f.ZERO, 1f));
+        flame.setParticlesPerSec(0);
+        flame.setLowLife(.6f);
+        flame.setHighLife(.6f);
+        flame.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 0, 0));
+        flame.getParticleInfluencer().setVelocityVariation(1f);
+        flame.setImagesX(2);
+        flame.setImagesY(2);
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        mat.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
+        mat.setBoolean("PointSprite", true);
+        flame.setMaterial(mat);
+        renderManager.preloadScene(flame);
+        rootNode.attachChild(flame);
     }
 
     private void setupRootControls() {
@@ -152,7 +182,8 @@ public class GameApplication extends SimpleApplication {
     }
 
     public void handleShipCollision() {
-        System.out.println("ship hit!");
+        System.out.println("ship happens!");
+        flame.emitAllParticles();
     }
 
     public static void main(String[] args) {
