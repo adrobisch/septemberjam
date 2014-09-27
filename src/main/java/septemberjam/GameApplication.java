@@ -14,6 +14,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import septemberjam.baem.WeaponControl;
 import septemberjam.control.CreateRockControl;
 import septemberjam.input.KeyboardInput;
 import septemberjam.input.LeapMotionInput;
@@ -40,8 +41,9 @@ public class GameApplication extends SimpleApplication {
     public void simpleInitApp() {
         setupPhysics();
         setupGui();
+
         setupRootControls();
-        addFighterModel();
+        addFighter();
         
         setupActions();
 		addRocks();
@@ -103,7 +105,7 @@ public class GameApplication extends SimpleApplication {
         return bulletAppState.getPhysicsSpace();
     }
 
-    private void addFighterModel() {
+    private void addFighter() {
         fighter = assetManager.loadModel("Models/fighter.j3o");
         fighter.scale(0.7f);
         fighter.rotate(0, degreeAsRadian(180), 0);
@@ -113,6 +115,9 @@ public class GameApplication extends SimpleApplication {
         fighter.addControl(new RigidBodyControl(2));
         fighter.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(0, -2.5f, 0));
         fighter.getControl(RigidBodyControl.class).setKinematic(true);
+        
+        fighter.addControl(new WeaponControl(this));
+        
         getPhysicsSpace().add(fighter);
     }
 
@@ -125,10 +130,9 @@ public class GameApplication extends SimpleApplication {
         Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
         material.setTexture("ColorMap", assetManager.loadTexture("Models/diffuse.tga"));
-
         spatial.setMaterial(material);
-
         spatial.scale(scale, scale, scale);
+        spatial.setUserData("type", "rock");
 
         Vector3f shipDirection = fighter.getLocalTranslation().subtract(position).normalize().mult(rockSpeed);
 
@@ -139,7 +143,7 @@ public class GameApplication extends SimpleApplication {
         getPhysicsSpace().add(spatial);
 
         rootNode.attachChild(spatial);
-
+        
         return spatial;
     }
 
@@ -187,6 +191,10 @@ public class GameApplication extends SimpleApplication {
         System.out.println("ship happens!");
         flame.emitAllParticles();
         collisionSound.play();
+    }
+
+    public Spatial getFighter() {
+        return fighter;
     }
 
     public static void main(String[] args) {

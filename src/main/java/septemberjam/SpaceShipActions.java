@@ -4,6 +4,7 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Spatial;
+import septemberjam.baem.WeaponControl;
 
 
 public class SpaceShipActions {
@@ -47,7 +48,7 @@ public class SpaceShipActions {
     }
     
     public void shoot() {
-
+        fighter.getControl(WeaponControl.class).setFire(true);
     }
 
     private void updateLocation(int x, int y) {
