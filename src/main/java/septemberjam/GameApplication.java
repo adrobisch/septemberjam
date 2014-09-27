@@ -24,10 +24,15 @@ public class GameApplication extends SimpleApplication {
     public void simpleInitApp() {
         setupPhysics();
         setupGui();
+        setupRootControls();
         addFighterModel();
 		addRocks();
         setupInput();
         disableMovableCamera();
+    }
+
+    private void setupRootControls() {
+        rootNode.addControl(new CreateRockControl(this, 0.5f));
     }
 
     private void setupGui() {
@@ -64,7 +69,7 @@ public class GameApplication extends SimpleApplication {
         return (degree / 180 * FastMath.PI);
     }
 
-    private Spatial createRock(Vector3f position, float scale, String model, float rockSpeed) {
+    public Spatial createRock(Vector3f position, float scale, String model, float rockSpeed) {
         Spatial spatial = assetManager.loadModel("Models/" + model + ".j3o");
         Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
@@ -74,9 +79,11 @@ public class GameApplication extends SimpleApplication {
 
         spatial.scale(scale, scale, scale);
 
+        Vector3f shipDirection = fighter.getLocalTranslation().subtract(position).normalize().mult(rockSpeed);
+
         spatial.addControl(new RigidBodyControl(new CapsuleCollisionShape(0.1f, 0.1f), 0.5f));
         spatial.getControl(RigidBodyControl.class).setPhysicsLocation(position);
-        spatial.getControl(RigidBodyControl.class).applyCentralForce(fighter.getLocalTranslation().subtract(position).normalize().mult(rockSpeed));
+        spatial.getControl(RigidBodyControl.class).applyCentralForce(shipDirection);
         spatial.getControl(RigidBodyControl.class).applyTorque(new Vector3f(0.1f, 0.1f, 0.1f));
         getPhysicsSpace().add(spatial);
 
@@ -84,16 +91,15 @@ public class GameApplication extends SimpleApplication {
     }
 
     public void addRocks() {
-        rootNode.addControl(new CreateRockControl());
-
+        float startZ = -30f;
         float rockSpeed = 60f;
-	Spatial rock1 = createRock(new Vector3f(-3, 0, -10), 0.1f, "rock_01", rockSpeed);
-        Spatial rock2 = createRock(new Vector3f(-2, 0, -10), 0.1f, "rock_02", rockSpeed);
-        Spatial rock3 = createRock(new Vector3f(-1, 0, -10), 0.1f, "rock_03", rockSpeed);
-        Spatial rock4 = createRock(new Vector3f(0, 0, -10), 0.1f, "rock_04", rockSpeed);
-        Spatial rock5 = createRock(new Vector3f(1, 0, -10), 0.1f, "rock_05", rockSpeed);
-        Spatial rock6= createRock(new Vector3f(2, 0, -10), 0.1f, "rock_06", rockSpeed);
-        Spatial rockFit = createRock(new Vector3f(3, 0, -10), 0.005f, "rock_fit", rockSpeed);
+	    Spatial rock1 = createRock(new Vector3f(-3, 1, startZ), 0.1f, "rock_01", rockSpeed);
+        Spatial rock2 = createRock(new Vector3f(-2, 2, startZ), 0.1f, "rock_02", rockSpeed);
+        Spatial rock3 = createRock(new Vector3f(-1, -2, startZ), 0.1f, "rock_03", rockSpeed);
+        Spatial rock4 = createRock(new Vector3f(0, -6, startZ), 0.1f, "rock_04", rockSpeed);
+        Spatial rock5 = createRock(new Vector3f(1, -2, startZ), 0.1f, "rock_05", rockSpeed);
+        Spatial rock6= createRock(new Vector3f(2, -6, startZ), 0.1f, "rock_06", rockSpeed);
+        Spatial rockFit = createRock(new Vector3f(3, -2, startZ), 0.005f, "rock_fit", rockSpeed);
     
         rootNode.attachChild(rock1);
         rootNode.attachChild(rock2);
@@ -120,6 +126,7 @@ public class GameApplication extends SimpleApplication {
 
     private void disableMovableCamera() {
         getFlyByCamera().setEnabled(false);
+        //cam.setLocation(new Vector3f(0, 10f, 0));
         //cam.lookAt(fighter.getLocalTranslation(), Vector3f.UNIT_Y);
     }
 
