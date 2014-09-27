@@ -1,6 +1,7 @@
 package septemberjam;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
@@ -13,6 +14,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import septemberjam.baem.WeaponControl;
 import septemberjam.control.CreateRockControl;
 import septemberjam.input.KeyboardInput;
 import septemberjam.input.LeapMotionInput;
@@ -33,6 +35,8 @@ public class GameApplication extends SimpleApplication {
 
     private ParticleEmitter flame;
 
+    private AudioNode collisionSound;
+
     @Override
     public void simpleInitApp() {
         setupPhysics();
@@ -43,6 +47,7 @@ public class GameApplication extends SimpleApplication {
         setupActions();
 		addRocks();
         createFlame();
+        createCollisionSound();
         setupInput();
         disableMovableCamera();
     }
@@ -68,6 +73,14 @@ public class GameApplication extends SimpleApplication {
         flame.setMaterial(mat);
         renderManager.preloadScene(flame);
         rootNode.attachChild(flame);
+    }
+
+    private void createCollisionSound() {
+        collisionSound = new AudioNode(assetManager, "Sound/Effects/Gun.wav", true);
+        collisionSound.setLooping(false);
+        collisionSound.setPositional(true);
+        collisionSound.setVolume(3);
+        rootNode.attachChild(collisionSound);
     }
 
     private void setupRootControls() {
@@ -101,6 +114,9 @@ public class GameApplication extends SimpleApplication {
         fighter.addControl(new RigidBodyControl(2));
         fighter.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(0, -2.5f, 0));
         fighter.getControl(RigidBodyControl.class).setKinematic(true);
+        
+        fighter.addControl(new WeaponControl(this));
+        
         getPhysicsSpace().add(fighter);
     }
 
@@ -117,6 +133,7 @@ public class GameApplication extends SimpleApplication {
         spatial.setMaterial(material);
 
         spatial.scale(scale, scale, scale);
+        spatial.setUserData("type", "rock");
 
         Vector3f shipDirection = fighter.getLocalTranslation().subtract(position).normalize().mult(rockSpeed);
 
@@ -184,7 +201,12 @@ public class GameApplication extends SimpleApplication {
     public void handleShipCollision(Spatial nonShipNode) {
         System.out.println("ship happens!");
         flame.emitAllParticles();
+        collisionSound.play();
         getRootNode().detachChild(nonShipNode);
+    }
+
+    public Spatial getFighter() {
+        return fighter;
     }
 
     public static void main(String[] args) {
