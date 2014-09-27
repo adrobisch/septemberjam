@@ -37,7 +37,7 @@ public class SpaceshipLocationUpdate implements Callable<Void> {
     }
 
     void updateLocation(float x, float y, float z) {
-        fighterSpatial.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(x, y, z));
+        fighterSpatial.setLocalTranslation(new Vector3f(x, y, z));
     }
 
     @Override

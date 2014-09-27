@@ -12,6 +12,7 @@ import com.jme3.scene.Spatial;
 import septemberjam.input.KeyboardInput;
 import septemberjam.input.LeapMotionInput;
 import septemberjam.input.LeapMotionListener;
+import septemberjam.input.SpaceShipCollistionListener;
 
 public class GameApplication extends SimpleApplication {
     LeapMotionInput leapMotionInput;
@@ -38,6 +39,7 @@ public class GameApplication extends SimpleApplication {
         stateManager.attach(bulletAppState);
         getPhysicsSpace().enableDebug(assetManager);
         getPhysicsSpace().setGravity(Vector3f.ZERO);
+        getPhysicsSpace().addCollisionListener(new SpaceShipCollistionListener());
     }
 
     public PhysicsSpace getPhysicsSpace() {
@@ -48,10 +50,12 @@ public class GameApplication extends SimpleApplication {
         fighter = assetManager.loadModel("Models/fighter.j3o");
         fighter.scale(0.7f);
         fighter.rotate(0, degreeAsRadian(180), 0);
+        fighter.setName("fighter");
         rootNode.attachChild(fighter);
 
         fighter.addControl(new RigidBodyControl(2));
-        fighter.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(0, -2.5f, 0));
+        fighter.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(3, -2.5f, 0));
+        fighter.getControl(RigidBodyControl.class).setKinematic(true);
         getPhysicsSpace().add(fighter);
     }
 
@@ -60,7 +64,6 @@ public class GameApplication extends SimpleApplication {
     }
 
 	public void addRocks() {
-
         Spatial rock1 = createRock(new Vector3f(-3, 0, -10), 0.1f, "rock_01", 60f);
         Spatial rock2 = createRock(new Vector3f(-2, 0, -10), 0.1f, "rock_02", 60f);
         Spatial rock3 = createRock(new Vector3f(-1, 0, -10), 0.1f, "rock_03", 60f);
