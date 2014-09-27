@@ -2,6 +2,9 @@ package septemberjam.input;
 
 import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Listener;
+import septemberjam.GameApplication;
+
+import java.util.concurrent.Callable;
 
 /**
  * @author andreas

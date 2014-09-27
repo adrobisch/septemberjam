@@ -8,12 +8,13 @@ import septemberjam.input.LeapMotionListener;
 
 public class GameApplication extends SimpleApplication {
     LeapMotionInput leapMotionInput;
+    private Spatial fighter;
 
     @Override
     public void simpleInitApp() {
         setupInput();
 
-        Spatial fighter = assetManager.loadModel("Models/fighter.j3o");
+        fighter = assetManager.loadModel("Models/fighter.j3o");
         fighter.scale(0.7f);
         fighter.rotate(0, degreeAsRadian(180), 0);
         fighter.setLocalTranslation(0, -2.5f, 0);
@@ -25,7 +26,7 @@ public class GameApplication extends SimpleApplication {
     }
 
     private void setupInput() {
-        leapMotionInput = new LeapMotionInput(new LeapMotionListener());
+        leapMotionInput = new LeapMotionInput(new LeapMotionListener(this));
         leapMotionInput.start();
     }
 
@@ -36,7 +37,7 @@ public class GameApplication extends SimpleApplication {
     }
 
     public void updateSpaceShipLocation(float x, float y) {
-
+        enqueue(new SpaceshipLocationUpdate(x, y, fighter));
     }
 
     public static void main(String[] args) {
