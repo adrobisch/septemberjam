@@ -12,6 +12,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Sphere;
 import septemberjam.GameApplication;
 
 /**
@@ -21,7 +22,8 @@ import septemberjam.GameApplication;
 public class WeaponControl extends AbstractControl implements Savable, Cloneable{
 
     private static final float AUTO_FIRE_COOLDOWN = 0.5f;
-    
+    public static final float bulletSize = 0.10f;
+
     private boolean fire = true;
 
     private float bulletTimer = 0f;
@@ -53,10 +55,10 @@ public class WeaponControl extends AbstractControl implements Savable, Cloneable
     protected void controlRender(RenderManager rm, ViewPort vp) { }
 
     private void fireBullet() {
-        Vector3f bbox = new Vector3f(0.15f, 0.15f, 0.15f);
+        Vector3f bbox = new Vector3f(bulletSize, bulletSize, bulletSize);
         
         // Setup Bullet
-        Geometry bullet = new Geometry("Box", new Box(bbox.x, bbox.y, bbox.z));
+        Geometry bullet = new Geometry("Box", new Sphere(20,20, bulletSize));
         Material mat_bullet = new Material(application.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
         mat_bullet.setColor("Color", ColorRGBA.Red);
         bullet.setMaterial(mat_bullet);
@@ -68,7 +70,7 @@ public class WeaponControl extends AbstractControl implements Savable, Cloneable
         bullet.addControl(rigidBodyControl);
         
         rigidBodyControl.setPhysicsLocation(fighter.getLocalTranslation().add(0,0,-3f));
-        rigidBodyControl.applyCentralForce(new Vector3f(fighter.getLocalTranslation().x, fighter.getLocalTranslation().y, -200f));
+        rigidBodyControl.applyCentralForce(new Vector3f(fighter.getLocalTranslation().x, fighter.getLocalTranslation().y, -400f));
 
         application.getPhysicsSpace().add(bullet);
         

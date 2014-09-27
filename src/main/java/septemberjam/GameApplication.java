@@ -200,6 +200,7 @@ public class GameApplication extends SimpleApplication {
 
     public void handleShipCollision(Spatial nonShipNode) {
         System.out.println("ship happens!");
+        flame.setLocalTranslation(getFighter().getLocalTranslation());
         flame.emitAllParticles();
         collisionSound.play();
         getRootNode().detachChild(nonShipNode);
@@ -207,6 +208,10 @@ public class GameApplication extends SimpleApplication {
 
     public Spatial getFighter() {
         return fighter;
+    }
+
+    public ParticleEmitter getFlame() {
+        return flame;
     }
 
     public static void main(String[] args) {

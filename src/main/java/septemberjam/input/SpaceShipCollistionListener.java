@@ -19,7 +19,12 @@ public class SpaceShipCollistionListener implements PhysicsCollisionListener {
 
     @Override
     public void collision(PhysicsCollisionEvent event) {
-        if (event.getNodeA().getName().equals("fighter") || event.getNodeB().getName().equals("fighter")) {
+        if (!event.getNodeA().getName().equals("fighter") && !event.getNodeB().getName().equals("fighter")) {
+            gameApplication.getRootNode().detachChild(event.getNodeA());
+            gameApplication.getRootNode().detachChild(event.getNodeB());
+            gameApplication.getFlame().setLocalTranslation(event.getNodeA().getLocalTranslation());
+            gameApplication.getFlame().emitAllParticles();
+        } else if (event.getNodeA().getName().equals("fighter") || event.getNodeB().getName().equals("fighter")) {
             gameApplication.handleShipCollision(getNonShipNode(event));
         }
     }
