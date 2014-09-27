@@ -65,7 +65,7 @@ public class SpaceShipActions {
         
         Vector3f cameraLocation = location.mult(CAMERA_MOVE_FACTOR).add(cameraOrigin);
         
-        //camera.setLocation(cameraLocation);
+        camera.setLocation(cameraLocation);
     }
 
 }
