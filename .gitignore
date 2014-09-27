@@ -1,0 +1,5 @@
+/liblwjgl64.so
+/libopenal64.so
+target
+.idea
+*.iml
