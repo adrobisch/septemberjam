@@ -100,7 +100,7 @@ public class GameApplication extends SimpleApplication {
     }
 
     public void addRocks() {
-        rootNode.addControl(new CreateRockControl());
+        rootNode.addControl(new CreateRockControl(this, 0.7f));
 
         float startZ = -30f;
         float rockSpeed = 60f;
@@ -154,7 +154,7 @@ public class GameApplication extends SimpleApplication {
     }
 
     public void updateSpaceShipLocation(float x, float y) {
-        enqueue(new SpaceshipLocationUpdate(x, y, fighter, cam));
+        enqueue(new LocationUpdate(x, y, actions));
     }
 
     public void handleShipCollision() {
