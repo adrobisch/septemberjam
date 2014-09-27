@@ -31,7 +31,7 @@ public class CreateRockControl extends AbstractControl {
     }
 
     private void createRock() {
-        gameApplication.createRock(new Vector3f(-3, 1, -30), 0.1f, "rock_01", 100f);
+        gameApplication.createRock(new Vector3f(-3, 1, -30), 0.1f, "rock_04", 100f);
     }
 
     @Override

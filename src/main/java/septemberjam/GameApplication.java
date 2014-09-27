@@ -52,7 +52,7 @@ public class GameApplication extends SimpleApplication {
     private void setupPhysics() {
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
-        getPhysicsSpace().enableDebug(assetManager);
+        //getPhysicsSpace().enableDebug(assetManager);
         getPhysicsSpace().setGravity(Vector3f.ZERO);
         getPhysicsSpace().addCollisionListener(new SpaceShipCollistionListener(this));
     }
