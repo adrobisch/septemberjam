@@ -9,10 +9,10 @@ public class SpaceshipLocationUpdate implements Callable<Void> {
     float x;
     float y;
 
-    public SpaceshipLocationUpdate(final float x, final float y, Spatial figherSpatial) {
+    public SpaceshipLocationUpdate(final float x, final float y, Spatial fighterSpatial) {
         this.x = x;
         this.y = y;
-        this.fighterSpatial = figherSpatial;
+        this.fighterSpatial = fighterSpatial;
     }
 
     @Override
