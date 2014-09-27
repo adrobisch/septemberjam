@@ -11,7 +11,6 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
-import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import septemberjam.GameApplication;
 
@@ -69,8 +68,8 @@ public class WeaponControl extends AbstractControl implements Savable, Cloneable
         
         bullet.addControl(rigidBodyControl);
         
-        rigidBodyControl.setPhysicsLocation(fighter.getLocalTranslation().add(0,0,-3f));
-        rigidBodyControl.applyCentralForce(new Vector3f(fighter.getLocalTranslation().x, fighter.getLocalTranslation().y, -400f));
+        rigidBodyControl.setPhysicsLocation(fighter.getLocalTranslation().add(0,0,-5f));
+        rigidBodyControl.applyCentralForce(new Vector3f(fighter.getLocalTranslation().x, fighter.getLocalTranslation().y, -100f));
 
         application.getPhysicsSpace().add(bullet);
         

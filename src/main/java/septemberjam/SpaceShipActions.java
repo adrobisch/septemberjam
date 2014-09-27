@@ -18,8 +18,7 @@ public class SpaceShipActions {
     private final Camera camera;
     
     private final Vector3f cameraOrigin;
-    
-    
+
     public SpaceShipActions(Camera camera, Spatial fighter) {
         this.cameraOrigin = camera.getLocation().clone();
         

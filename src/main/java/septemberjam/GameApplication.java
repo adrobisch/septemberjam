@@ -182,7 +182,7 @@ public class GameApplication extends SimpleApplication {
 
     private void disableMovableCamera() {
         getFlyByCamera().setEnabled(false);
-        //cam.setLocation(new Vector3f(0, 10f, 0));
+        // cam.setLocation(new Vector3f(0, 10f, 0));
         //cam.lookAt(fighter.getLocalTranslation(), Vector3f.UNIT_Y);
     }
 
