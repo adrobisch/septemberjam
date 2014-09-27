@@ -8,13 +8,13 @@ import septemberjam.SpaceshipLocationUpdate;
 
 public class KeyboardInput {
 
-
     public void setupKeyMapping(InputManager inputManager, final SpaceshipLocationUpdate spaceshipLocationUpdate) {
-
         String strafe_left_mapping = "STRAFE_LEFT";
         String strafe_right_mapping = "STRAFE_RIGHT";
         String strafe_up_mapping = "STRAFE_UP";
         String strafe_down_mapping = "STRAFE_DOWN";
+
+        String shoot = "SHOOT";
 
         inputManager.addMapping(strafe_left_mapping, new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping(strafe_right_mapping, new KeyTrigger(KeyInput.KEY_D));
@@ -43,6 +43,13 @@ public class KeyboardInput {
         };
 
         AnalogListener moveDownListener = new AnalogListener() {
+            @Override
+            public void onAnalog(String name, float value, float tpf) {
+                spaceshipLocationUpdate.moveDown();
+            }
+        };
+
+        AnalogListener shootListener = new AnalogListener() {
             @Override
             public void onAnalog(String name, float value, float tpf) {
                 spaceshipLocationUpdate.moveDown();
