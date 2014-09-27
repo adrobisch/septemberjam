@@ -90,7 +90,7 @@ public class GameApplication extends SimpleApplication {
 
         spatial.addControl(new RigidBodyControl(0.5f));
         spatial.getControl(RigidBodyControl.class).setPhysicsLocation(position);
-        spatial.getControl(RigidBodyControl.class).applyCentralForce(new Vector3f(0, 0, speed));
+        spatial.getControl(RigidBodyControl.class).applyCentralForce(fighter.getLocalTranslation().subtract(position).normalize().mult(speed));
         spatial.getControl(RigidBodyControl.class).applyTorque(new Vector3f(0.1f, 0.1f, 0.1f));
         getPhysicsSpace().add(spatial);
 
