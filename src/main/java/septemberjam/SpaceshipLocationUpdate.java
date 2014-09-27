@@ -1,5 +1,7 @@
 package septemberjam;
 
+import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
 import java.util.concurrent.Callable;
@@ -19,24 +21,28 @@ public class SpaceshipLocationUpdate implements Callable<Void> {
     }
 
     public void moveLeft() {
-        fighterSpatial.setLocalTranslation(fighterSpatial.getLocalTranslation().x - MOVE_SPEED, fighterSpatial.getLocalTranslation().y, SPACE_SHIP_IS_NOT_FLYING);
+        updateLocation(fighterSpatial.getLocalTranslation().x - MOVE_SPEED, fighterSpatial.getLocalTranslation().y, SPACE_SHIP_IS_NOT_FLYING);
     }
 
     public void moveRight() {
-        fighterSpatial.setLocalTranslation(fighterSpatial.getLocalTranslation().x + MOVE_SPEED, fighterSpatial.getLocalTranslation().y, SPACE_SHIP_IS_NOT_FLYING);
+        updateLocation(fighterSpatial.getLocalTranslation().x + MOVE_SPEED, fighterSpatial.getLocalTranslation().y, SPACE_SHIP_IS_NOT_FLYING);
     }
 
     public void moveUp() {
-        fighterSpatial.setLocalTranslation(fighterSpatial.getLocalTranslation().x, fighterSpatial.getLocalTranslation().y + MOVE_SPEED, SPACE_SHIP_IS_NOT_FLYING);
+        updateLocation(fighterSpatial.getLocalTranslation().x, fighterSpatial.getLocalTranslation().y + MOVE_SPEED, SPACE_SHIP_IS_NOT_FLYING);
     }
 
     public void moveDown() {
-        fighterSpatial.setLocalTranslation(fighterSpatial.getLocalTranslation().x, fighterSpatial.getLocalTranslation().y - MOVE_SPEED, SPACE_SHIP_IS_NOT_FLYING);
+        updateLocation(fighterSpatial.getLocalTranslation().x, fighterSpatial.getLocalTranslation().y - MOVE_SPEED, SPACE_SHIP_IS_NOT_FLYING);
+    }
+
+    void updateLocation(float x, float y, float z) {
+        fighterSpatial.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(x, y, z));
     }
 
     @Override
     public Void call() throws Exception {
-        fighterSpatial.setLocalTranslation(x, y - CORRECT_LEAP_MOTION_HAND_DISTANCE, fighterSpatial.getLocalTranslation().z);
+        updateLocation(x, y - CORRECT_LEAP_MOTION_HAND_DISTANCE, fighterSpatial.getLocalTranslation().z);
         return null;
     }
 

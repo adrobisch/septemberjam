@@ -20,10 +20,16 @@ public class GameApplication extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         setupPhysics();
+        setupGui();
         addFighterModel();
 		addRocks();
         setupInput();
         disableMovableCamera();
+    }
+
+    private void setupGui() {
+        setDisplayStatView(false);
+        setDisplayFps(false);
     }
 
     private void setupPhysics() {
