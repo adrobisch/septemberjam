@@ -181,9 +181,10 @@ public class GameApplication extends SimpleApplication {
         enqueue(new LocationUpdate(x, y, actions));
     }
 
-    public void handleShipCollision() {
+    public void handleShipCollision(Spatial nonShipNode) {
         System.out.println("ship happens!");
         flame.emitAllParticles();
+        getRootNode().detachChild(nonShipNode);
     }
 
     public static void main(String[] args) {

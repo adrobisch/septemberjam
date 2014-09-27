@@ -2,6 +2,8 @@ package septemberjam.input;
 
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import septemberjam.GameApplication;
 
 /**
@@ -17,11 +19,16 @@ public class SpaceShipCollistionListener implements PhysicsCollisionListener {
 
     @Override
     public void collision(PhysicsCollisionEvent event) {
-        String aName = event.getNodeA().getName();
-        String bName = event.getNodeB().getName();
+        if (event.getNodeA().getName().equals("fighter") || event.getNodeB().getName().equals("fighter")) {
+            gameApplication.handleShipCollision(getNonShipNode(event));
+        }
+    }
 
-        if (aName.equals("fighter") || bName.equals("fighter")) {
-            gameApplication.handleShipCollision();
+    private Spatial getNonShipNode(PhysicsCollisionEvent event) {
+        if (event.getNodeA().getName().equals("fighter")) {
+            return event.getNodeB();
+        } else {
+            return event.getNodeA();
         }
     }
 }
