@@ -151,7 +151,7 @@ public class GameApplication extends SimpleApplication {
     }
 
     public void handleShipCollision() {
-        System.out.println("ship hit!");
+        System.out.println("ship happens!");
     }
 
     public static void main(String[] args) {
