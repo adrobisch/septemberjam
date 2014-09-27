@@ -3,6 +3,7 @@ package septemberjam;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.FastMath;
@@ -88,7 +89,7 @@ public class GameApplication extends SimpleApplication {
 
         spatial.scale(scale, scale, scale);
 
-        spatial.addControl(new RigidBodyControl(0.5f));
+        spatial.addControl(new RigidBodyControl(new CapsuleCollisionShape(0.1f, 0.1f), 0.5f));
         spatial.getControl(RigidBodyControl.class).setPhysicsLocation(position);
         spatial.getControl(RigidBodyControl.class).applyCentralForce(fighter.getLocalTranslation().subtract(position).normalize().mult(speed));
         spatial.getControl(RigidBodyControl.class).applyTorque(new Vector3f(0.1f, 0.1f, 0.1f));
