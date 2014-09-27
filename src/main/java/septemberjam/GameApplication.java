@@ -1,58 +1,36 @@
 package septemberjam;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.input.CameraInput;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.AnalogListener;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import septemberjam.input.KeyboardInput;
 import septemberjam.input.LeapMotionInput;
 import septemberjam.input.LeapMotionListener;
 
 public class GameApplication extends SimpleApplication {
     LeapMotionInput leapMotionInput;
     private Spatial fighter;
-    
-  @Override
-  public void simpleInitApp() {
-  
-    setupInput();
-    getFlyByCamera().setEnabled(false);
 
-    fighter = assetManager.loadModel("Models/fighter.j3o");
-    fighter.scale(0.7f);
-    fighter.rotate(0, degreeAsRadian(180), 0);
-    fighter.setLocalTranslation(0, -2.5f, 0);
-    rootNode.attachChild(fighter);
+    @Override
+    public void simpleInitApp() {
+        addFighterModel();
+		addRocks();
+        setupInput();
+        disableMovableCamera();
+    }
 
-    
-    Spatial rock1 = createRock(new Vector3f(-3, 0, -10), 0.1f, "rock_01");
-    Spatial rock2 = createRock(new Vector3f(-2, 0, -10), 0.1f, "rock_02");
-    Spatial rock3 = createRock(new Vector3f(-1, 0, -10), 0.1f, "rock_03");
-    Spatial rock4 = createRock(new Vector3f(0, 0, -10), 0.1f, "rock_04");
-    Spatial rock5 = createRock(new Vector3f(1, 0, -10), 0.1f, "rock_05");
-    Spatial rock6= createRock(new Vector3f(2, 0, -10), 0.1f, "rock_06");
-    Spatial rockFit = createRock(new Vector3f(3, 0, -10), 0.005f, "rock_fit");
-    
-    rootNode.attachChild(rock1);
-    rootNode.attachChild(rock2);
-    rootNode.attachChild(rock3);
-    rootNode.attachChild(rock4);
-    rootNode.attachChild(rock5);
-    rootNode.attachChild(rock6);
-    rootNode.attachChild(rockFit);
-  }
-  
-  public float degreeAsRadian(float degree) {
-    return (degree / 180 * FastMath.PI);
-  }
+    private void addFighterModel() {
+        fighter = assetManager.loadModel("Models/fighter.j3o");
+        fighter.scale(0.7f);
+        fighter.rotate(0, degreeAsRadian(180), 0);
+        fighter.setLocalTranslation(0, -2.5f, 0);
+        rootNode.attachChild(fighter);
+    }
 
-    public static void main(String[] args) {
-      new GameApplication().start();
+    public float degreeAsRadian(float degree) {
+        return (degree / 180 * FastMath.PI);
     }
 
     private Spatial createRock(Vector3f position, float scale, String model) {
@@ -70,9 +48,29 @@ public class GameApplication extends SimpleApplication {
       return spatial;
     }
 
+	public void addRocks() {
+	Spatial rock1 = createRock(new Vector3f(-3, 0, -10), 0.1f, "rock_01");
+    Spatial rock2 = createRock(new Vector3f(-2, 0, -10), 0.1f, "rock_02");
+    Spatial rock3 = createRock(new Vector3f(-1, 0, -10), 0.1f, "rock_03");
+    Spatial rock4 = createRock(new Vector3f(0, 0, -10), 0.1f, "rock_04");
+    Spatial rock5 = createRock(new Vector3f(1, 0, -10), 0.1f, "rock_05");
+    Spatial rock6= createRock(new Vector3f(2, 0, -10), 0.1f, "rock_06");
+    Spatial rockFit = createRock(new Vector3f(3, 0, -10), 0.005f, "rock_fit");
+    
+    rootNode.attachChild(rock1);
+    rootNode.attachChild(rock2);
+    rootNode.attachChild(rock3);
+    rootNode.attachChild(rock4);
+    rootNode.attachChild(rock5);
+    rootNode.attachChild(rock6);
+    rootNode.attachChild(rockFit);
+	}
+
+
     private void setupInput() {
-        //setupLeapMotion();
-        setupKeyMapping();
+        setupLeapMotion();
+        KeyboardInput keyboardInput = new KeyboardInput();
+        keyboardInput.setupKeyMapping(inputManager, new SpaceshipLocationUpdate(0f, 0f, fighter));
     }
 
     private void setupLeapMotion() {
@@ -80,22 +78,8 @@ public class GameApplication extends SimpleApplication {
         leapMotionInput.start();
     }
 
-    private void setupKeyMapping() {
-        String strafe_left_mapping = "STRAFE_LEFT";
-        final float MOVE_SPEED = 0.1f;
-
-        inputManager.addMapping(strafe_left_mapping, new KeyTrigger(KeyInput.KEY_A));
-        inputManager.addMapping("STRAFE_RIGHT", new KeyTrigger(KeyInput.KEY_D));
-        inputManager.addMapping("STRAFE_UP", new KeyTrigger(KeyInput.KEY_W));
-        inputManager.addMapping("STRAFE_DOWN", new KeyTrigger(KeyInput.KEY_S));
-
-        inputManager.addListener(new AnalogListener() {
-            @Override
-            public void onAnalog(String name, float value, float tpf) {
-                Vector3f currentTranslation = fighter.getLocalTranslation();
-                fighter.setLocalTranslation(currentTranslation.x - MOVE_SPEED, currentTranslation.y, currentTranslation.z);
-            }
-        }, strafe_left_mapping);
+    private void disableMovableCamera() {
+        getFlyByCamera().setEnabled(false);
     }
 
     @Override
@@ -108,5 +92,9 @@ public class GameApplication extends SimpleApplication {
 
     public void updateSpaceShipLocation(float x, float y) {
         enqueue(new SpaceshipLocationUpdate(x, y, fighter));
+    }
+
+    public static void main(String[] args) {
+        new GameApplication().start();
     }
 }
