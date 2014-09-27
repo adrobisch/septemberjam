@@ -58,38 +58,42 @@ public class GameApplication extends SimpleApplication {
         return (degree / 180 * FastMath.PI);
     }
 
+	public void addRocks() {
+
+        Spatial rock1 = createRock(new Vector3f(-3, 0, -10), 0.1f, "rock_01");
+        Spatial rock2 = createRock(new Vector3f(-2, 0, -10), 0.1f, "rock_02");
+        Spatial rock3 = createRock(new Vector3f(-1, 0, -10), 0.1f, "rock_03");
+        Spatial rock4 = createRock(new Vector3f(0, 0, -10), 0.1f, "rock_04");
+        Spatial rock5 = createRock(new Vector3f(1, 0, -10), 0.1f, "rock_05");
+        Spatial rock6= createRock(new Vector3f(2, 0, -10), 0.1f, "rock_06");
+        Spatial rockFit = createRock(new Vector3f(3, 0, -10), 0.005f, "rock_fit");
+
+        rootNode.attachChild(rock1);
+        rootNode.attachChild(rock2);
+        rootNode.attachChild(rock3);
+        rootNode.attachChild(rock4);
+        rootNode.attachChild(rock5);
+        rootNode.attachChild(rock6);
+        rootNode.attachChild(rockFit);
+	}
+
     private Spatial createRock(Vector3f position, float scale, String model) {
 
-      Spatial spatial = assetManager.loadModel("Models/" + model + ".j3o");
-      Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Spatial spatial = assetManager.loadModel("Models/" + model + ".j3o");
+        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
-      material.setTexture("ColorMap", assetManager.loadTexture("Models/diffuse.tga"));
+        material.setTexture("ColorMap", assetManager.loadTexture("Models/diffuse.tga"));
 
-      spatial.setMaterial(material);
+        spatial.setMaterial(material);
 
-      spatial.scale(scale, scale, scale);
-      spatial.move(position.x, position.y, position.z);
+        spatial.scale(scale, scale, scale);
 
-      return spatial;
+        spatial.addControl(new RigidBodyControl(0.5f));
+        spatial.getControl(RigidBodyControl.class).setPhysicsLocation(position);
+        getPhysicsSpace().add(spatial);
+
+        return spatial;
     }
-
-	public void addRocks() {
-	Spatial rock1 = createRock(new Vector3f(-3, 0, -10), 0.1f, "rock_01");
-    Spatial rock2 = createRock(new Vector3f(-2, 0, -10), 0.1f, "rock_02");
-    Spatial rock3 = createRock(new Vector3f(-1, 0, -10), 0.1f, "rock_03");
-    Spatial rock4 = createRock(new Vector3f(0, 0, -10), 0.1f, "rock_04");
-    Spatial rock5 = createRock(new Vector3f(1, 0, -10), 0.1f, "rock_05");
-    Spatial rock6= createRock(new Vector3f(2, 0, -10), 0.1f, "rock_06");
-    Spatial rockFit = createRock(new Vector3f(3, 0, -10), 0.005f, "rock_fit");
-    
-    rootNode.attachChild(rock1);
-    rootNode.attachChild(rock2);
-    rootNode.attachChild(rock3);
-    rootNode.attachChild(rock4);
-    rootNode.attachChild(rock5);
-    rootNode.attachChild(rock6);
-    rootNode.attachChild(rockFit);
-	}
 
 
     private void setupInput() {
