@@ -75,7 +75,7 @@ public class GameApplication extends SimpleApplication {
     }
 
     private void createCollisionSound() {
-        collisionSound = new AudioNode(assetManager, "Audio/Gun.wav", true);
+        collisionSound = new AudioNode(assetManager, "Sound/Effects/Gun.wav", true);
         collisionSound.setLooping(false);
         collisionSound.setPositional(true);
         collisionSound.setVolume(3);
