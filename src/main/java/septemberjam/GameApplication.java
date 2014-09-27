@@ -23,7 +23,7 @@ public class GameApplication extends SimpleApplication {
         setupPhysics();
         setupGui();
         addFighterModel();
-		addRocks();
+        addRocks();
         setupInput();
         disableMovableCamera();
     }
@@ -59,27 +59,7 @@ public class GameApplication extends SimpleApplication {
         return (degree / 180 * FastMath.PI);
     }
 
-	public void addRocks() {
-
-        Spatial rock1 = createRock(new Vector3f(-3, 0, -10), 0.1f, "rock_01", 60f);
-        Spatial rock2 = createRock(new Vector3f(-2, 0, -10), 0.1f, "rock_02", 60f);
-        Spatial rock3 = createRock(new Vector3f(-1, 0, -10), 0.1f, "rock_03", 60f);
-        Spatial rock4 = createRock(new Vector3f(0, 0, -10), 0.1f, "rock_04", 60f);
-        Spatial rock5 = createRock(new Vector3f(1, 0, -10), 0.1f, "rock_05", 60f);
-        Spatial rock6= createRock(new Vector3f(2, 0, -10), 0.1f, "rock_06", 60f);
-        Spatial rockFit = createRock(new Vector3f(3, 0, -10), 0.005f, "rock_fit", 60f);
-
-        rootNode.attachChild(rock1);
-        rootNode.attachChild(rock2);
-        rootNode.attachChild(rock3);
-        rootNode.attachChild(rock4);
-        rootNode.attachChild(rock5);
-        rootNode.attachChild(rock6);
-        rootNode.attachChild(rockFit);
-	}
-
-    private Spatial createRock(Vector3f position, float scale, String model, Float speed) {
-
+    private Spatial createRock(Vector3f position, float scale, String model) {
         Spatial spatial = assetManager.loadModel("Models/" + model + ".j3o");
         Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
@@ -98,13 +78,31 @@ public class GameApplication extends SimpleApplication {
         return spatial;
     }
 
+    public void addRocks() {
+	Spatial rock1 = createRock(new Vector3f(-3, 0, -10), 0.1f, "rock_01");
+        Spatial rock2 = createRock(new Vector3f(-2, 0, -10), 0.1f, "rock_02");
+        Spatial rock3 = createRock(new Vector3f(-1, 0, -10), 0.1f, "rock_03");
+        Spatial rock4 = createRock(new Vector3f(0, 0, -10), 0.1f, "rock_04");
+        Spatial rock5 = createRock(new Vector3f(1, 0, -10), 0.1f, "rock_05");
+        Spatial rock6= createRock(new Vector3f(2, 0, -10), 0.1f, "rock_06");
+        Spatial rockFit = createRock(new Vector3f(3, 0, -10), 0.005f, "rock_fit");
+    
+        rootNode.attachChild(rock1);
+        rootNode.attachChild(rock2);
+        rootNode.attachChild(rock3);
+        rootNode.attachChild(rock4);
+        rootNode.attachChild(rock5);
+        rootNode.attachChild(rock6);
+        rootNode.attachChild(rockFit);
+    }
 
     private void setupInput() {
         if (Boolean.parseBoolean(System.getProperty("leap.motion.enabled"))) {
             setupLeapMotion();
         }
+     
         KeyboardInput keyboardInput = new KeyboardInput();
-        keyboardInput.setupKeyMapping(inputManager, new SpaceshipLocationUpdate(0f, 0f, fighter));
+        keyboardInput.setupKeyMapping(inputManager, new SpaceshipLocationUpdate(0f, 0f, fighter, cam));
     }
 
     private void setupLeapMotion() {
@@ -125,7 +123,7 @@ public class GameApplication extends SimpleApplication {
     }
 
     public void updateSpaceShipLocation(float x, float y) {
-        enqueue(new SpaceshipLocationUpdate(x, y, fighter));
+        enqueue(new SpaceshipLocationUpdate(x, y, fighter, cam));
     }
 
     public static void main(String[] args) {
