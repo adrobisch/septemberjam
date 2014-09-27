@@ -96,6 +96,8 @@ public class GameApplication extends SimpleApplication {
         spatial.getControl(RigidBodyControl.class).applyTorque(new Vector3f(0.1f, 0.1f, 0.1f));
         getPhysicsSpace().add(spatial);
 
+        rootNode.attachChild(spatial);
+
         return spatial;
     }
 
@@ -111,14 +113,6 @@ public class GameApplication extends SimpleApplication {
         Spatial rock5 = createRock(new Vector3f(1, -2, startZ), 0.1f, "rock_05", rockSpeed);
         Spatial rock6= createRock(new Vector3f(2, -6, startZ), 0.1f, "rock_06", rockSpeed);
         Spatial rockFit = createRock(new Vector3f(3, -2, startZ), 0.005f, "rock_fit", rockSpeed);
-    
-        rootNode.attachChild(rock1);
-        rootNode.attachChild(rock2);
-        rootNode.attachChild(rock3);
-        rootNode.attachChild(rock4);
-        rootNode.attachChild(rock5);
-        rootNode.attachChild(rock6);
-        rootNode.attachChild(rockFit);
     }
 
     private void setupInput() {
