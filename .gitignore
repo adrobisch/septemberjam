@@ -1,6 +1,11 @@
-/liblwjgl64.so
+liblwjgl64.so
 libbulletjme64.so
-/libopenal64.so
-target
-.idea
+libopenal64.so
+libbulletjme.so
+liblwjgl.so
+libopenal.so
+
+target/
+
+.idea/
 *.iml
