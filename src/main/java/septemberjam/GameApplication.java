@@ -45,7 +45,7 @@ public class GameApplication extends SimpleApplication {
         addFighterModel();
         
         setupActions();
-		addRocks();
+		initializeLevelWithSomeRocks();
         createFlame();
         createCollisionSound();
         setupInput();
@@ -148,18 +148,18 @@ public class GameApplication extends SimpleApplication {
         return spatial;
     }
 
-    public void addRocks() {
+    public void initializeLevelWithSomeRocks() {
         rootNode.addControl(new CreateRockControl(this, 0.7f));
 
         float startZ = -30f;
         float rockSpeed = 60f;
-	    Spatial rock1 = createRock(new Vector3f(-3, 1, startZ), 0.1f, "rock_01", rockSpeed);
-        Spatial rock2 = createRock(new Vector3f(-2, 2, startZ), 0.1f, "rock_02", rockSpeed);
-        Spatial rock3 = createRock(new Vector3f(-1, -2, startZ), 0.1f, "rock_03", rockSpeed);
-        Spatial rock4 = createRock(new Vector3f(0, -6, startZ), 0.1f, "rock_04", rockSpeed);
-        Spatial rock5 = createRock(new Vector3f(1, -2, startZ), 0.1f, "rock_05", rockSpeed);
-        Spatial rock6= createRock(new Vector3f(2, -6, startZ), 0.1f, "rock_06", rockSpeed);
-        Spatial rockFit = createRock(new Vector3f(3, -2, startZ), 0.005f, "rock_fit", rockSpeed);
+	    createRock(new Vector3f(-3, 1, startZ), 0.1f, "rock_01", rockSpeed);
+        createRock(new Vector3f(-2, 2, startZ), 0.1f, "rock_02", rockSpeed);
+        createRock(new Vector3f(-1, -2, startZ), 0.1f, "rock_03", rockSpeed);
+        createRock(new Vector3f(0, -6, startZ), 0.1f, "rock_04", rockSpeed);
+        createRock(new Vector3f(1, -2, startZ), 0.1f, "rock_05", rockSpeed);
+        createRock(new Vector3f(2, -6, startZ), 0.1f, "rock_06", rockSpeed);
+        createRock(new Vector3f(3, -2, startZ), 0.005f, "rock_fit", rockSpeed);
     }
 
     private void setupInput() {
