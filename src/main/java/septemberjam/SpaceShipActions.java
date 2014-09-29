@@ -4,12 +4,13 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Spatial;
+import com.jme3.system.AppSettings;
 import septemberjam.baem.WeaponControl;
 
 
 public class SpaceShipActions {
     
-    private static final float MOVE_SPEED = 0.2f;
+    private static final float MOVE_SPEED = 0.0001f;
     private static final float SPACE_SHIP_IS_NOT_FLYING = 0;
     
     private static final float CAMERA_MOVE_FACTOR = 0.5f;
@@ -52,13 +53,27 @@ public class SpaceShipActions {
 
     private void updateLocation(int x, int y) {
         Vector3f shipLocation = fighter.getLocalTranslation();
-        shipLocation.x += MOVE_SPEED * x;
-        shipLocation.y += MOVE_SPEED * y;
+        shipLocation.x += updatedShipLocationRelativeToScreenWidth(x);
+        shipLocation.y += updatedShipLocationRelativeToScreenHeight(y);
         shipLocation.z = SPACE_SHIP_IS_NOT_FLYING;
         
         updateLocation(shipLocation);
     }
-    
+
+    private float updatedShipLocationRelativeToScreenWidth(int x) {
+        // FIXME these settings are not the actual game settings chosen by the player but defaults 640x480
+        AppSettings settings = new AppSettings(true);
+        int screenWidth = settings.getHeight();
+        return screenWidth * MOVE_SPEED * x;
+    }
+
+    private float updatedShipLocationRelativeToScreenHeight(int y) {
+        // FIXME these settings are not the actual game settings chosen by the player but defaults 640x480
+        AppSettings settings = new AppSettings(true);
+        int screenHeight = settings.getHeight();
+        return screenHeight * MOVE_SPEED * y;
+    }
+
     private void updateLocation(Vector3f location) {
         fighter.getControl(RigidBodyControl.class).setPhysicsLocation(location);
         fighter.setLocalTranslation(location.x, location.y, location.z);
