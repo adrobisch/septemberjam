@@ -14,13 +14,9 @@ import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.shape.Sphere;
 import septemberjam.GameApplication;
 
-/**
- *
- * @author nikku
- */
 public class WeaponControl extends AbstractControl implements Savable, Cloneable{
 
-    private static final float AUTO_FIRE_COOLDOWN = 0.5f;
+    private static final float AUTO_FIRE_COOL_DOWN = 0.5f;
     public static final float bulletSize = 0.10f;
 
     private boolean fire = true;
@@ -43,7 +39,7 @@ public class WeaponControl extends AbstractControl implements Savable, Cloneable
         if (fire) {
             bulletTimer += t;
 
-            if (bulletTimer > AUTO_FIRE_COOLDOWN) {
+            if (bulletTimer > AUTO_FIRE_COOL_DOWN) {
                 fireBullet();
                 bulletTimer = 0;
             }
@@ -54,7 +50,7 @@ public class WeaponControl extends AbstractControl implements Savable, Cloneable
     protected void controlRender(RenderManager rm, ViewPort vp) { }
 
     private void fireBullet() {
-        Vector3f bbox = new Vector3f(bulletSize, bulletSize, bulletSize);
+        Vector3f bulletBox = new Vector3f(bulletSize, bulletSize, bulletSize);
         
         // Setup Bullet
         Geometry bullet = new Geometry("Box", new Sphere(20,20, bulletSize));
@@ -64,17 +60,16 @@ public class WeaponControl extends AbstractControl implements Savable, Cloneable
         
         final Spatial fighter = application.getFighter();
         
-        final RigidBodyControl rigidBodyControl = new RigidBodyControl(new BoxCollisionShape(bbox));
+        final RigidBodyControl rigidBodyControl = new RigidBodyControl(new BoxCollisionShape(bulletBox));
         
         bullet.addControl(rigidBodyControl);
-        
-        rigidBodyControl.setPhysicsLocation(fighter.getLocalTranslation().add(0,0,-5f));
-        rigidBodyControl.applyCentralForce(new Vector3f(fighter.getLocalTranslation().x, fighter.getLocalTranslation().y, -100f));
+        bullet.setUserData("type", "bullet");
+
+        rigidBodyControl.setPhysicsLocation(fighter.getLocalTranslation().add(0, 0, -5f));
+        rigidBodyControl.applyCentralForce(new Vector3f(fighter.getLocalTranslation().x, fighter.getLocalTranslation().y, -10000f));
 
         application.getPhysicsSpace().add(bullet);
-        
-        bullet.setUserData("type", "bullet");
-        
+
         application.getRootNode().attachChild(bullet);
         bulletTimer = 0f;
     }
