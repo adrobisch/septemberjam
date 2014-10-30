@@ -1,5 +1,9 @@
 Small project being hacked at the [berlin mini game jam](http://www.berlinminijam.de/) 27.09.14
 
+## Start
+
+You need [sbt](http://www.scala-sbt.org/) to start the game.
+`sbt run`
 
 ##Credits
 
